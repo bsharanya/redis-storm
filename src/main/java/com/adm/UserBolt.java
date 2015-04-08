@@ -20,7 +20,7 @@ public class UserBolt implements IRichBolt{
     @Override
     public void execute(Tuple tuple) {
         Status tweet = (Status) tuple.getValue(0);
-        System.out.println(tweet.getText());
+        System.out.println(tweet.getUser().getName() + ": " + tweet.getText());
     }
 
     @Override

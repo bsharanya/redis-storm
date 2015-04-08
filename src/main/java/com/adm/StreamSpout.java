@@ -80,7 +80,7 @@ public class StreamSpout implements IRichSpout {
     @Override
     public Map<String, Object> getComponentConfiguration() {
         Config config = new Config();
-        config.setMaxTaskParallelism(2);
+        config.setMaxTaskParallelism(1);
         return config;
     }
 
@@ -95,7 +95,7 @@ public class StreamSpout implements IRichSpout {
                 .setOAuthAccessToken(this.accessTokenKey)
                 .setOAuthAccessTokenSecret(this.accessTokenSecret);
 
-        TwitterStreamFactory streamFactory = new TwitterStreamFactory(configuration.build());
+        TwitterStreamFactory streamFactory = new TwitterStreamFactory(configuration.setJSONStoreEnabled(true).build());
         this.twitterStream = streamFactory.getInstance();
         this.twitterStream.addListener(new TweetsListener());
         this.twitterStream.sample();
@@ -119,8 +119,8 @@ public class StreamSpout implements IRichSpout {
     @Override
     public void nextTuple() {
         Status status = queue.poll();
-        if (queue == null) {
-            Utils.sleep(50);
+        if (status == null) {
+            Utils.sleep(1000);
             return;
         }
 

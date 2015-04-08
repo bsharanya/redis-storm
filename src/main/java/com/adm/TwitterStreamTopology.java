@@ -21,11 +21,9 @@ public class TwitterStreamTopology {
         topologyBuilder.setBolt("Users", new UserBolt(), 2).allGrouping("Streams");
 
         Config conf = new Config();
-        conf.setNumWorkers(2);
         LocalCluster cluster = new LocalCluster();
         cluster.submitTopology("test", conf, topologyBuilder.createTopology());
-
-        Utils.sleep(10000);
-        cluster.shutdown();
+//        Utils.sleep(10000);
+//        cluster.shutdown();
     }
 }
